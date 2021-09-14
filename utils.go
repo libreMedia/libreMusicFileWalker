@@ -1,0 +1,8 @@
+package main
+
+import "strings"
+
+func suffixChecker(inputName string, suffix string) (r bool) {
+	res := strings.HasSuffix(inputName, suffix)
+	return res
+}
