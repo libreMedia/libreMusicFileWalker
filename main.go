@@ -1,5 +1,6 @@
 package main
 
 func main() {
-	dbInsert("another thing", "benixxx")
+	dbCreate("foo")
+	walk("/music", "foo")
 }

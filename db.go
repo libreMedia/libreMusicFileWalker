@@ -21,7 +21,7 @@ func dbCreate(dbName string) {
 	defer db.Close()
 
 	sqlStmt := `
-	create table foo (name text not null primary key, music text);
+	create table foo (name text not null primary key, path text);
 	delete from foo;
 	`
 	_, err = db.Exec(sqlStmt)
@@ -31,16 +31,16 @@ func dbCreate(dbName string) {
 	}
 }
 
-func dbInsert(in string, in2 string) {
-	db, err := sql.Open("sqlite3", "./foo.db")
+func dbInsert(dbName string, name string, path string) {
+	db, err := sql.Open("sqlite3", "./"+dbName+".db")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	vals := "VALUES('" + in + "' , '" + in2 + "')"
+	vals := `VALUES("` + name + `" , "` + path + `")`
 	sqlStmt := `
-	INSERT INTO foo (name,music) ` + vals
+	INSERT INTO foo (name,path) ` + vals
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		log.Printf("%q: %s\n", err, sqlStmt)
