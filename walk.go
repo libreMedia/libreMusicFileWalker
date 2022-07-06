@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -12,11 +13,16 @@ func walk(dirToWalk string, dbName string) {
 			if err != nil {
 				return err
 			}
-			if suffixChecker(path, ".mp3") || suffixChecker(path, ".ogg") || suffixChecker(path, ".wav") {
-				// fmt.Println(path, info)
-				dbInsert(dbName, path, path)
+			if suffixChecker(path, ".mp3") ||
+				suffixChecker(path, ".ogg") ||
+				suffixChecker(path, ".wav") ||
+				suffixChecker(path, ".flac") {
+				// fmt.Println(info)
+				routePath := slashReplacer(path)[3:]
+				fmt.Println(routePath)
+				dbInsert(dbName, path, routePath, path)
 			} else {
-				// fmt.Println("things")
+				fmt.Println("things")
 			}
 
 			return nil
