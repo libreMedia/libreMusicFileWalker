@@ -13,9 +13,18 @@ func removeDb(dbName string) {
 }
 
 type dbModel struct {
-	Names     string
-	RoutePath string
-	Path      string
+	name       string
+	routePath  string
+	path       string
+	title      string
+	artist     string
+	album      string
+	year       string
+	givenGenre string
+	votedGenre string
+	comment    string
+	composer   string
+	lyrics     string
 }
 
 func dbCreate(dbName string) {
@@ -27,7 +36,7 @@ func dbCreate(dbName string) {
 	defer db.Close()
 
 	sqlStmt := `
-	create table musicDB (name text not null primary key, routePath text, path text);
+	create table musicDB (name text not null primary key, routePath text, path text, title text, artist text, album text, year text, givenGenre text, votedGenre text, comment text, composer text, lyrics text);
 	delete from musicDB;
 	`
 	_, err = db.Exec(sqlStmt)
@@ -46,22 +55,22 @@ func readDb() []dbModel {
 	var path string
 	for rows.Next() {
 		rows.Scan(&names, &routePath, &path)
-		modelRow := dbModel{Names: names, RoutePath: routePath, Path: path}
+		modelRow := dbModel{name: names, routePath: routePath, path: path}
 		modelArray = append(modelArray, modelRow)
 	}
 	return modelArray
 }
 
-func dbInsert(dbName string, name string, routePath string, path string) {
+func dbInsert(dbName string, name string, routePath string, path string, title string, artist string, album string, year string, givenGenre string, votedGenre string, comment string, composer string, lyrics string) {
 	db, err := sql.Open("sqlite3", "./"+dbName+".db")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	vals := `VALUES("` + name + `" , "` + routePath + `" , "` + path + `")`
+	vals := `VALUES("` + name + `" , "` + routePath + `" , "` + path + `" , "` + title + `" , "` + artist + `" , "` + album + `" , "` + year + `" , "` + givenGenre + `" , "` + votedGenre + `" , "` + comment + `" , "` + composer + `" , "` + lyrics + `" )`
 	sqlStmt := `
-	INSERT INTO musicDB (name,routePath,path) ` + vals
+	INSERT INTO musicDB (name,routePath,path,title,artist,album,year,givenGenre,votedGenre,comment,composer,lyrics) ` + vals
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
 		log.Printf("%q: %s\n", err, sqlStmt)
